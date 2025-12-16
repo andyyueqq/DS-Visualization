@@ -91,7 +91,7 @@ with tab1:
         "Time Machine: Test Period (2023-2024)",
         """
         **The Reality Check:**
-        * Watch the **Yellow line (Quant)** carefully.
+        * Watch the **Orange line (Quant)** carefully.
         * It struggles to keep up with the simple HODL and DCA strategies.
         * This demonstrates **Overfitting**: A strategy that worked in the past fails in new market conditions.
         """,
@@ -105,9 +105,9 @@ with tab2:
         "Full History: Training Set",
         """
         **10 Years of Data:**
-        * The Y-axis is a **Logarithmic Scale**.
-        * **Why?** Bitcoin grew from cents to thousands. A standard scale would make early years look like a flat line.
-        * This view shows the percentage growth clearly across all years.
+        * The Y-axis is a **Standard Linear Scale**.
+        * We are looking at the raw dollar value growth.
+        * This view emphasizes the massive absolute gains in the later years compared to the early days.
         """,
         icon="📈"
     )
@@ -117,8 +117,8 @@ with tab2:
         "Recent Performance: Test Set (The 'Crash')",
         """
         **Where the Quant Strategy Failed:**
-        * Look at the **Green Line (Quant)** flatlining at the bottom.
-        * Meanwhile, **Orange (HODL)** and **Blue (DCA)** rallied with the market.
+        * Look at the **Orange Line (Quant)** flatlining at the bottom.
+        * Meanwhile, **Blue (HODL)** and **Purple (DCA)** rallied with the market.
         * **Conclusion**: In a strong bull market, simple strategies often outperform complex algorithms.
         """,
         icon="📉"
@@ -172,4 +172,4 @@ with tab3:
 # Sidebar Info
 # ---------------------------------------------------------
 with st.sidebar:
-    st.success("✅ Connected to GitHub")
+    st.success("✅ Connected to GitHub - For Data Science and Business Intelligence")
