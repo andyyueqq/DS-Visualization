@@ -1,5 +1,6 @@
 import streamlit as st
 import requests
+import pandas as pd
 
 # ---------------------------------------------------------
 # 1. Page Configuration
@@ -11,33 +12,77 @@ st.set_page_config(
 )
 
 # ---------------------------------------------------------
-# 2. Key Performance Indicators (KPIs)
+# 2. Sidebar: Investment Simulator
+# ---------------------------------------------------------
+with st.sidebar:
+    st.header("💰 Investment Simulator")
+    st.markdown("Adjust the capital to see how much you would have made during the test period (2023-2024).")
+    
+    # User Input for Capital
+    initial_investment = st.number_input(
+        "Initial Capital ($)",
+        min_value=100,
+        max_value=1000000,
+        value=10000,
+        step=1000,
+        help="Assume this amount was invested at the start of the test period."
+    )
+    
+    st.divider()
+    st.success("✅ Connected to GitHub")
+
+# --- Calculation Logic (Proportional Scaling) ---
+# Base values assumed from a standard $10,000 simulation
+base_capital = 10000
+multiplier = initial_investment / base_capital
+
+# Calculate dynamic values
+hodl_val = 46009 * multiplier
+dca_val = 31328 * multiplier
+quant_val = 18156 * multiplier
+
+# ---------------------------------------------------------
+# 3. Key Performance Indicators (KPIs)
 # ---------------------------------------------------------
 st.title("🚀 Bitcoin Strategy Analysis Report (2010-2024)")
-st.markdown("### 🏆 Performance Snapshot (Test Set: 2023-2024)")
+st.markdown(f"### 🏆 Performance Snapshot (Test Set: 2023-2024)")
+st.caption(f"Showing results for an initial investment of **${initial_investment:,.0f}**")
 
 # 3-Column Layout for KPIs
 kpi1, kpi2, kpi3 = st.columns(3)
 
 with kpi1:
     st.markdown("### 🏦 HODL (Buy & Hold)")
-    st.metric(label="Final Equity", value="$46,009", delta="Highest Return 🔥")
+    st.metric(
+        label="Final Equity", 
+        value=f"${hodl_val:,.0f}", 
+        delta="Highest Return 🔥"
+    )
     st.info("💡 **Meaning**: Buy once, hold forever. Highest absolute return, but requires a strong stomach for volatility.")
 
 with kpi2:
     st.markdown("### 📅 DCA (Dollar-Cost Avg)")
-    st.metric(label="Final Equity", value="$31,328", delta="Sharpe Ratio 3.04 ✅")
+    st.metric(
+        label="Final Equity", 
+        value=f"${dca_val:,.0f}", 
+        delta="Sharpe Ratio 3.04 ✅"
+    )
     st.success("💡 **Meaning**: Fixed monthly investment. Lower risk and smoother growth. The most robust strategy for most people.")
 
 with kpi3:
     st.markdown("### 🤖 Quant (Active Trading)")
-    st.metric(label="Final Equity", value="$18,156", delta="-60% vs HODL", delta_color="inverse")
+    st.metric(
+        label="Final Equity", 
+        value=f"${quant_val:,.0f}", 
+        delta="-60% vs HODL", 
+        delta_color="inverse"
+    )
     st.warning("💡 **Meaning**: Active buying/selling based on technical signals. Underperformed significantly in the test period (Overfitting).")
 
 st.divider()
 
 # ---------------------------------------------------------
-# 3. GitHub Image Loader Configuration
+# 4. GitHub Image Loader Configuration
 # ---------------------------------------------------------
 GITHUB_USER = "lucky11chances"
 GITHUB_REPO = "bitcoin-investment-strategies-draft"
@@ -66,7 +111,7 @@ def render_chart(filename, title, explanation, icon="📊"):
     st.divider()
 
 # ---------------------------------------------------------
-# 4. Dashboard Tabs
+# 5. Dashboard Tabs
 # ---------------------------------------------------------
 tab1, tab2, tab3 = st.tabs(["🎬 Time-Lapse Animations", "📈 Performance Overview", "🧠 Strategy Deep Dive"])
 
@@ -98,7 +143,7 @@ with tab1:
         icon="🎬"
     )
 
-# --- Tab 2: Static Charts ---
+# --- Tab 2: Static Charts & Metrics ---
 with tab2:
     render_chart(
         "portfolio_value_training.png",
@@ -123,6 +168,23 @@ with tab2:
         """,
         icon="📉"
     )
+
+    # --- Metrics Comparison Table (Dynamic) ---
+    st.subheader("📊 Strategy Comparison Matrix")
+    st.caption(f"Calculated based on your ${initial_investment:,.0f} simulated investment.")
+    
+    # Define table data with dynamic values
+    table_data = {
+        "Strategy Name": ["HODL (Buy & Hold)", "DCA (Monthly Buy)", "Quant (Active Trading)"],
+        "Final Equity ($)": [f"${hodl_val:,.0f}", f"${dca_val:,.0f}", f"${quant_val:,.0f}"],
+        "Total Return vs HODL": ["-", "-31.9%", "-60.5%"],
+        "Risk Profile": ["High Volatility", "Low Volatility (Sharpe 3.04)", "High Risk (Overfitting)"],
+        "Activity Level": ["Passive (1 Trade)", "Passive (Monthly)", "Active (High Frequency)"]
+    }
+    
+    # Display as a clean table
+    st.table(pd.DataFrame(table_data))
+    st.caption("📝 **Note:** 'Total Return vs HODL' shows the performance gap compared to the simple Buy & Hold strategy.")
 
 # --- Tab 3: Deep Dive ---
 with tab3:
@@ -167,9 +229,3 @@ with tab3:
         """,
         icon="💸"
     )
-
-# ---------------------------------------------------------
-# Sidebar Info
-# ---------------------------------------------------------
-with st.sidebar:
-    st.success("✅ Connected to GitHub - For Data Science and Business Intelligence")
