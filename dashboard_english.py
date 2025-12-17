@@ -11,7 +11,7 @@ st.set_page_config(
 )
 
 # ---------------------------------------------------------
-# 2. Sidebar: Experimental Setup (Strictly Fixed)
+# 2. Sidebar: Experimental Setup & Authors
 # ---------------------------------------------------------
 with st.sidebar:
     st.header("⚙️ Experimental Setup")
@@ -38,18 +38,42 @@ with st.sidebar:
     st.markdown("### 🔹 Quant Strategy")
     st.markdown("""
     * **Principal:** $13,000 (Base)
-    * **Optimization:** Sharpe Ratio (Random Walk)
+    * **Optimization:** Sharpe Ratio
     * **Cost:** 0.15% per trade
     """)
 
-    st.markdown("---")
+    st.divider()
+    
+    # --- 👥 Authors Section in Sidebar ---
+    st.markdown("### 👨‍🎓 Project Team")
+    st.markdown("""
+    **Haoyu Xie** **Xiangyu Yue** **Linxiao Chen** **Ruoxuan Huang**
+    """)
+    
     st.caption("Data Source: Comparative Analysis of Bitcoin Investment Strategies (2010–2024)")
 
 # ---------------------------------------------------------
-# 3. Main Header & Authors
+# 3. Main Header & Authors (Top of Page)
 # ---------------------------------------------------------
 st.title("📊 Comparative Analysis of Bitcoin Investment Strategies (2010–2024)")
-st.markdown("**Authors:** Haoyu Xie, Xiangyu Yue, Linxiao Chen, Ruoxuan Huang")
+
+# --- ✍️ Authors Display ---
+st.markdown("""
+<style>
+.author-text {
+    font-size: 18px;
+    font-weight: 500;
+    color: #4a4a4a;
+}
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown(
+    """
+    **Authors:** Haoyu Xie, Xiangyu Yue, Linxiao Chen, Ruoxuan Huang  
+    *A Data Science Project evaluating HODL, DCA, and Quantitative Trading Strategies.*
+    """
+)
 st.markdown("---")
 
 # ---------------------------------------------------------
