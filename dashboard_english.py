@@ -1,231 +1,197 @@
 import streamlit as st
-import requests
 import pandas as pd
 
 # ---------------------------------------------------------
 # 1. Page Configuration
 # ---------------------------------------------------------
 st.set_page_config(
-    page_title="Bitcoin Strategy Dashboard",
-    page_icon="🚀",
+    page_title="BTC Strategy Analysis Report",
+    page_icon="📊",
     layout="wide"
 )
 
 # ---------------------------------------------------------
-# 2. Sidebar: Investment Simulator
+# 2. Sidebar: Experimental Setup (Strictly Fixed)
 # ---------------------------------------------------------
 with st.sidebar:
-    st.header("💰 Investment Simulator")
-    st.markdown("Adjust the capital to see how much you would have made during the test period (2023-2024).")
+    st.header("⚙️ Experimental Setup")
+    st.info("Parameters are fixed to match Section 1.2 of the report.")
     
-    # User Input for Capital
-    initial_investment = st.number_input(
-        "Initial Capital ($)",
-        min_value=100,
-        max_value=1000000,
-        value=10000,
-        step=1000,
-        help="Assume this amount was invested at the start of the test period."
-    )
+    st.markdown("### 🔹 HODL Strategy")
+    st.markdown("""
+    * **Principal:** $13,000 (Lump Sum)
+    * **Action:** One-time injection
+    * **Timing:** Start of Test Period
+    """)
     
     st.divider()
-    st.success("✅ Connected to GitHub")
-
-# --- Calculation Logic (Proportional Scaling) ---
-# Base values assumed from a standard $10,000 simulation
-base_capital = 10000
-multiplier = initial_investment / base_capital
-
-# Calculate dynamic values
-hodl_val = 46009 * multiplier
-dca_val = 31328 * multiplier
-quant_val = 18156 * multiplier
-
-# ---------------------------------------------------------
-# 3. Key Performance Indicators (KPIs)
-# ---------------------------------------------------------
-st.title("🚀 Bitcoin Strategy Analysis Report (2010-2024)")
-st.markdown(f"### 🏆 Performance Snapshot (Test Set: 2023-2024)")
-st.caption(f"Showing results for an initial investment of **${initial_investment:,.0f}**")
-
-# 3-Column Layout for KPIs
-kpi1, kpi2, kpi3 = st.columns(3)
-
-with kpi1:
-    st.markdown("### 🏦 HODL (Buy & Hold)")
-    st.metric(
-        label="Final Equity", 
-        value=f"${hodl_val:,.0f}", 
-        delta="Highest Return 🔥"
-    )
-    st.info("💡 **Meaning**: Buy once, hold forever. Highest absolute return, but requires a strong stomach for volatility.")
-
-with kpi2:
-    st.markdown("### 📅 DCA (Dollar-Cost Avg)")
-    st.metric(
-        label="Final Equity", 
-        value=f"${dca_val:,.0f}", 
-        delta="Sharpe Ratio 3.04 ✅"
-    )
-    st.success("💡 **Meaning**: Fixed monthly investment. Lower risk and smoother growth. The most robust strategy for most people.")
-
-with kpi3:
-    st.markdown("### 🤖 Quant (Active Trading)")
-    st.metric(
-        label="Final Equity", 
-        value=f"${quant_val:,.0f}", 
-        delta="-60% vs HODL", 
-        delta_color="inverse"
-    )
-    st.warning("💡 **Meaning**: Active buying/selling based on technical signals. Underperformed significantly in the test period (Overfitting).")
-
-st.divider()
-
-# ---------------------------------------------------------
-# 4. GitHub Image Loader Configuration
-# ---------------------------------------------------------
-GITHUB_USER = "lucky11chances"
-GITHUB_REPO = "bitcoin-investment-strategies-draft"
-BRANCH = "main"
-BASE_URL = f"https://raw.githubusercontent.com/{GITHUB_USER}/{GITHUB_REPO}/{BRANCH}/visualization"
-
-def render_chart(filename, title, explanation, icon="📊"):
-    """Render image from GitHub with a side explanation"""
-    url = f"{BASE_URL}/{filename}"
     
-    with st.container():
-        st.subheader(f"{icon} {title}")
-        
-        c1, c2 = st.columns([2, 1]) # Image takes 2/3 width, Text takes 1/3
-        
-        with c1:
-            try:
-                st.image(url, use_container_width=True)
-            except:
-                st.error(f"Failed to load image: {filename}")
-        
-        with c2:
-            st.markdown(f"**📖 How to read this:**")
-            st.info(explanation)
-    
+    st.markdown("### 🔹 DCA Strategy")
+    st.markdown("""
+    * **Total Principal:** $13,000
+    * **Action:** $1,000 / month
+    * **Duration:** 13 Months
+    """)
+
     st.divider()
+    
+    st.markdown("### 🔹 Quant Strategy")
+    st.markdown("""
+    * **Principal:** $13,000 (Base)
+    * **Optimization:** Sharpe Ratio (Random Walk)
+    * **Cost:** 0.15% per trade
+    """)
+
+    st.markdown("---")
+    st.caption("Data Source: Comparative Analysis of Bitcoin Investment Strategies (2010–2024)")
 
 # ---------------------------------------------------------
-# 5. Dashboard Tabs
+# 3. Main Header & Authors
 # ---------------------------------------------------------
-tab1, tab2, tab3 = st.tabs(["🎬 Time-Lapse Animations", "📈 Performance Overview", "🧠 Strategy Deep Dive"])
+st.title("📊 Comparative Analysis of Bitcoin Investment Strategies (2010–2024)")
+st.markdown("**Authors:** Haoyu Xie, Xiangyu Yue, Linxiao Chen, Ruoxuan Huang")
+st.markdown("---")
 
-# --- Tab 1: Animations ---
+# ---------------------------------------------------------
+# 4. Dashboard Tabs
+# ---------------------------------------------------------
+tab1, tab2, tab3, tab4 = st.tabs([
+    "📑 Executive Overview", 
+    "📈 Performance Analysis", 
+    "🧠 Quant Deep Dive", 
+    "🏁 Conclusion"
+])
+
+# --- Tab 1: Executive Overview ---
 with tab1:
-    st.warning("⚠️ Animations might take a few seconds to load...")
+    st.header("1. Executive Overview")
+    st.markdown("""
+    **Objective:** This report evaluates the historical performance and risk profiles of three distinct Bitcoin investment strategies. 
+    The study utilizes data spanning 2010–2024, with a specific focus on the **Testing Set (2023–2024)**.
+    """)
     
-    render_chart(
-        "portfolio_value_training_animated.gif",
-        "Time Machine: Training Period (2010-2020)",
-        """
-        **The Race is On:**
-        * **Blue (HODL)**: Starts fast, extremely volatile.
-        * **Purple (DCA)**: Slow and steady wins the race? Consistent upward trend.
-        * **Orange (Quant)**: The robot tries to beat the market by trading actively. It performs decently in this training period.
-        """,
-        icon="🎬"
-    )
+    # KPIs - STRICTLY FROM SECTION 1.3 Key Findings Table
+    st.subheader("🏆 Key Findings: Testing Phase (2023-2024)")
     
-    render_chart(
-        "portfolio_value_test_animated.gif",
-        "Time Machine: Test Period (2023-2024)",
-        """
-        **The Reality Check:**
-        * Watch the **Orange line (Quant)** carefully.
-        * It struggles to keep up with the simple HODL and DCA strategies.
-        * This demonstrates **Overfitting**: A strategy that worked in the past fails in new market conditions.
-        """,
-        icon="🎬"
-    )
-
-# --- Tab 2: Static Charts & Metrics ---
-with tab2:
-    render_chart(
-        "portfolio_value_training.png",
-        "Full History: Training Set",
-        """
-        **10 Years of Data:**
-        * The Y-axis is a **Standard Linear Scale**.
-        * We are looking at the raw dollar value growth.
-        * This view emphasizes the massive absolute gains in the later years compared to the early days.
-        """,
-        icon="📈"
-    )
-
-    render_chart(
-        "portfolio_value_test.png",
-        "Recent Performance: Test Set (The 'Crash')",
-        """
-        **Where the Quant Strategy Failed:**
-        * Look at the **Orange Line (Quant)** flatlining at the bottom.
-        * Meanwhile, **Blue (HODL)** and **Purple (DCA)** rallied with the market.
-        * **Conclusion**: In a strong bull market, simple strategies often outperform complex algorithms.
-        """,
-        icon="📉"
-    )
-
-    # --- Metrics Comparison Table (Dynamic) ---
-    st.subheader("📊 Strategy Comparison Matrix")
-    st.caption(f"Calculated based on your ${initial_investment:,.0f} simulated investment.")
+    kpi1, kpi2, kpi3 = st.columns(3)
     
-    # Define table data with dynamic values
-    table_data = {
-        "Strategy Name": ["HODL (Buy & Hold)", "DCA (Monthly Buy)", "Quant (Active Trading)"],
-        "Final Equity ($)": [f"${hodl_val:,.0f}", f"${dca_val:,.0f}", f"${quant_val:,.0f}"],
-        "Total Return vs HODL": ["-", "-31.9%", "-60.5%"],
-        "Risk Profile": ["High Volatility", "Low Volatility (Sharpe 3.04)", "High Risk (Overfitting)"],
-        "Activity Level": ["Passive (1 Trade)", "Passive (Monthly)", "Active (High Frequency)"]
+    with kpi1:
+        st.markdown("### 🏦 HODL")
+        st.metric(
+            label="Final Value ($13,000 Start)",
+            value="$48,457",
+            delta="Highest Return"
+        )
+        st.caption("**Sharpe Ratio: 2.03** | Max Drawdown: -93.07%")
+
+    with kpi2:
+        st.markdown("### 📅 DCA")
+        st.metric(
+            label="Final Value ($13,000 Total)",
+            value="$31,328",
+            delta="Most Robust"
+        )
+        st.caption("**Sharpe Ratio: 3.04** (Best Risk-Adjusted)")
+
+    with kpi3:
+        st.markdown("### 🤖 Quant")
+        st.metric(
+            label="Final Value ($13,000 Start)",
+            value="$18,883",
+            delta="Underperformed",
+            delta_color="inverse"
+        )
+        st.caption("**Sharpe Ratio: 1.08** (Severe Overfitting)")
+
+    st.markdown("### 📉 Strategy Comparison Matrix (Section 1.3)")
+    # Data strictly from Section 1.3 Table
+    comparison_data = {
+        "Metric": ["Training Sharpe (2010–2020)", "Testing Sharpe (2023–2024)", "Testing ROI", "Final Value (Testing)"],
+        "HODL ($13k)": ["1.70", "2.03", "268%", "$48,457"],
+        "DCA ($13k)": ["1.78", "3.04", "141%", "$31,328"],
+        "Quant ($13k)": ["1.98", "1.08", "45%", "$18,883"]
     }
-    
-    # Display as a clean table
-    st.table(pd.DataFrame(table_data))
-    st.caption("📝 **Note:** 'Total Return vs HODL' shows the performance gap compared to the simple Buy & Hold strategy.")
+    st.table(pd.DataFrame(comparison_data).set_index("Metric"))
 
-# --- Tab 3: Deep Dive ---
+# --- Tab 2: Performance Analysis ---
+with tab2:
+    st.header("3. Performance & Equity Curves")
+    
+    # Image Base URL
+    BASE_URL = "https://raw.githubusercontent.com/lucky11chances/bitcoin-investment-strategies-draft/main/visualization"
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.subheader("Training Period (2010-2020)")
+        st.image(f"{BASE_URL}/portfolio_value_training.png", caption="Fig 1. In-Sample Performance")
+        st.info("""
+        **Training Phase:** * The Quant strategy (Orange) achieved the highest Sharpe Ratio (1.98).
+        * HODL reached the highest absolute value but with extreme volatility.
+        """)
+        
+    with col2:
+        st.subheader("Testing Period (2023-2024)")
+        st.image(f"{BASE_URL}/portfolio_value_test.png", caption="Fig 2. Out-of-Sample Performance")
+        st.error("""
+        **Testing Phase (Overfitting):** * **Quant (Orange)** flatlined at $18,883.
+        * **HODL (Blue)** rallied to $48,457.
+        * **DCA (Purple)** provided steady growth to $31,328.
+        """)
+
+# --- Tab 3: Quant Deep Dive ---
 with tab3:
-    st.header("Inside the Robot's Brain")
+    st.header("2. Technical Deep Dive: Why Quant Failed")
     
-    # 1. Factor Weights
-    render_chart(
-        "factor_weights_en.png",
-        "Feature Importance: What matters?",
-        """
-        **The Decision Makers:**
-        * **Taller Bars** = Higher Importance.
-        * The algorithm looks at these specific technical indicators (like RSI, Moving Averages) to decide whether to Buy or Sell.
-        * If 'Volatility' is high, the model reacts strongly to price swings.
-        """,
-        icon="🧠"
-    )
+    st.markdown("""
+    The Quant strategy utilized a **Random Walk Optimization** on 10 technical factors (Momentum, Trend, Volatility, etc.).
+    Despite a strong training score, it failed to generalize.
+    """)
     
-    # 2. Position Changes
-    render_chart(
-        "position_changes.png",
-        "Market Timing (Position Changes)",
-        """
-        **Buy or Sell?**
-        * 🟦 **Blue Area (1.0)**: **Full Bitcoin**. The model predicts the price will go UP.
-        * ⬜ **White Area (0.0)**: **Cash (USDT)**. The model predicts a drop and sells everything to stay safe.
-        * **Note**: Frequent switching between Blue and White indicates the model is "nervous" or "choppy."
-        """,
-        icon="🚥"
-    )
+    c1, c2 = st.columns([1, 1])
     
-    # 3. Cumulative Trades
-    render_chart(
-        "cumulative_trades.png",
-        "Trading Frequency",
-        """
-        **Is the Robot Hyperactive?**
-        * **Steeper Slope** = More Frequent Trading.
-        * **HODL** is a flat line (1 trade).
-        * **Quant** trades hundreds of times.
-        * **The Cost**: Every trade costs a fee (0.15%). High frequency = High fees, which eat into profits.
-        """,
-        icon="💸"
-    )
+    with c1:
+        st.markdown("### 3.1 Factor Importance")
+        st.image(f"{BASE_URL}/factor_weights_en.png", use_container_width=True)
+        st.caption("Fig 3. Weight Distribution")
+        st.markdown("""
+        **Key Findings:**
+        * **PRICE_POS_60 (28.5%)**: The primary driver.
+        * **MOM_60**: Strong negative weight (Counter-trend bias).
+        """)
+
+    with c2:
+        st.markdown("### 3.3 Trading Frequency & Cost")
+        st.image(f"{BASE_URL}/cumulative_trades.png", use_container_width=True)
+        st.caption("Fig 4. Cumulative Trades")
+        st.warning("""
+        **The Cost of Churn:**
+        * **Turnover:** 4,883% annual turnover.
+        * **Trades:** 296 trades in the test set alone.
+        * **Impact:** 0.15% fee per trade eroded the 45% gross return.
+        """)
+
+    st.divider()
+    st.markdown("### 3.2 Market Timing (Position Changes)")
+    st.image(f"{BASE_URL}/position_changes.png", use_container_width=True)
+    st.caption("Fig 5. Binary Position Switching (0% vs 100%)")
+    st.markdown("The model exhibited 'nervous' behavior, frequently switching between full BTC position and Cash, indicating a lack of consistent trend identification in the test set.")
+
+# --- Tab 4: Conclusion ---
+with tab4:
+    st.header("4. Results and Conclusion")
+    
+    st.success("""
+    ### ✅ Final Verdict: DCA is the Superior Strategy
+    
+    > "Adopting a Dollar-Cost Averaging (DCA) approach is recommended."
+    
+    Based on the Comparative Analysis (2010–2024):
+    
+    1.  **Robustness (Winner: DCA):** DCA achieved a **Sharpe Ratio of 3.04** in the testing phase. It mitigates timing risk and psychological stress.
+    2.  **Overfitting (Loser: Quant):** The Quant model's Sharpe Ratio collapsed from **1.98 (Train)** to **1.08 (Test)**. It memorized historical noise but failed in the new market regime.
+    3.  **Risk (HODL):** While HODL had the highest final value (**$48,457**), it carries a historical max drawdown of **-93.07%**, making it unsuitable for risk-averse investors.
+    """)
+    
+    st.markdown("---")
+    st.caption("References: lucky11chances/bitcoin-investment-strategies-draft (GitHub) | Data: Bitcoin Historical Price Data (2010–2024)")
