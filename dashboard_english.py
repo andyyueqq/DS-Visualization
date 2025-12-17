@@ -70,7 +70,7 @@ st.markdown("""
 
 st.markdown(
     """
-    **Authors:** Haoyu Xie, Xiangyu Yue, Linxiao Chen, Ruoxuan Huang  
+    **👨‍🎓 Project Team:** Haoyu Xie, Xiangyu Yue, Linxiao Chen, Ruoxuan Huang  
     *A Data Science Project evaluating HODL, DCA, and Quantitative Trading Strategies.*
     """
 )
